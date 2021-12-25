@@ -1,9 +1,3 @@
-#
-# The Chess Board class
-# Will store the state of the chess game, print the chess board, find valid moves, store move logs.
-#
-# Note: move log class inspired by Eddie Sharick
-#
 from Piece import Rook, Knight, Bishop, Queen, King, Pawn
 from enums import Player
 
@@ -20,16 +14,10 @@ r \ c     0           1           2           3           4           5         
 '''
 
 
-# TODO: Flip the board according to the player
-# TODO: Pawns are usually indicated by no letters
-# TODO: stalemate
-# TODO: move logs - fix king castle boolean update
-# TODO: change move method argument about is_ai into something more elegant
 class game_state:
     # Initialize 2D array to represent the chess board
     def __init__(self):
-        # The board is a 2D array
-        # TODO: Change to a numpy format later
+       
         self.white_captives = []
         self.black_captives = []
         self.move_log = []
@@ -119,11 +107,6 @@ class game_state:
         return (evaluated_piece is not None) and (evaluated_piece != Player.EMPTY)
 
     def get_valid_moves(self, starting_square):
-        '''
-        remove pins from valid moves (unless the pinned piece move can get rid of a check and checks is empty
-        remove move from valid moves if the move falls within a check piece's valid move
-        if the moving piece is a king, the ending square cannot be in a check
-        '''
 
         current_row = starting_square[0]
         current_col = starting_square[1]
@@ -203,14 +186,6 @@ class game_state:
                 else:
                     for move in initial_valid_piece_moves:
                         valid_moves.append(move)
-            # if not valid_moves:
-            #     if self._is_check:
-            #         self.checkmate = True
-            #     else:
-            #         self.stalemate = True
-            # else:
-            #     self.checkmate = False
-            #     self.stalemate = False
             return valid_moves
         else:
             return None
@@ -231,14 +206,6 @@ class game_state:
             return 3
 
     def get_all_legal_moves(self, player):
-        # _all_valid_moves = [[], []]
-        # for row in range(0, 8):
-        #     for col in range(0, 8):
-        #         if self.is_valid_piece(row, col) and self.get_piece(row, col).is_player(player):
-        #             valid_moves = self.get_valid_moves((row, col))
-        #             if valid_moves:
-        #                 _all_valid_moves[0].append((row, col))
-        #                 _all_valid_moves[1].append(valid_moves)
         _all_valid_moves = []
         for row in range(0, 8):
             for col in range(0, 8):
@@ -556,17 +523,6 @@ class game_state:
     # true if white, false if black
     def whose_turn(self):
         return self.white_turn
-
-    '''
-    check for immediate check
-    - check 8 directions and 8 knight squares
-    check for pins
-    - whatever blocked from above is a pin
-    
-     - if immediate check, change check value to true
-     - list valid moves to prevent check but not remove pin
-     - if there are no valid moves to prevent check, checkmate
-    '''
 
     def check_for_check(self, king_location, player):
         # self._is_check = False
